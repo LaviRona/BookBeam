@@ -29,4 +29,10 @@ export class BooksService {
         if (idx === -1) throw new NotFoundException(`Book ${id} not found`);
         this.books.splice(idx, 1);
     }
+
+    update(id: number, dto: CreateBookDto): Book {
+        const book = this.findOne(id);
+        Object.assign(book, dto);
+        return book;
+    }
 }

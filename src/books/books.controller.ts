@@ -37,4 +37,13 @@ export class BooksController {
     remove(@Param('id', ParseIntPipe) id: number): void {
         this.booksService.remove(id);
     }
+
+    @Patch(':id')
+    @ApiOkResponse({ type: Book })
+    update(
+        @Param('id', ParseIntPipe) id: number,
+        @Body() dto: CreateBookDto,
+    ): Book {
+        return this.booksService.update(id, dto);
+    }
 }
