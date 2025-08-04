@@ -175,6 +175,3 @@ src/
 
 ---
 
-## License
-
-[MIT](LICENSE) © 2025 Your Name / Your Org
