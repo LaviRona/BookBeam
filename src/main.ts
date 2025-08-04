@@ -8,8 +8,8 @@ async function bootstrap() {
 
   app.useGlobalPipes(
     new ValidationPipe({
-      transform: true,   // cast "5" → 5, etc.
-      whitelist: true,   // strip unknown properties
+      transform: true,
+      whitelist: true,
       transformOptions: { enableImplicitConversion: true },
     }),
   );

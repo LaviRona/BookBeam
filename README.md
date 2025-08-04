@@ -1,98 +1,180 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# NestJS Book Review API
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+A simple—but production-ready—REST API for managing a catalogue of books and user reviews.  
+Built with **NestJS**, **TypeScript**, and **class-validator**, the service demonstrates clean architecture, layered validation, and auto-generated Swagger docs.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+![Swagger screenshot](./docs/swagger-ui.png)
 
-## Description
+---
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Table of Contents
+1. [TL;DR Quick Start](#tldr-quick-start)
+2. [Features](#features)
+3. [Requirements](#requirements)
+4. [Getting Started](#getting-started)
+5. [API Reference](#api-reference)
+6. [Example Requests](#example-requests)
+7. [Testing](#testing)
+8. [Project Structure](#project-structure)
+9. [License](#license)
 
-## Project setup
+---
 
+## TL;DR Quick Start
 ```bash
-$ npm install
+# 1 Install
+npm install
+
+# 2 Start in watch mode
+npm run start:dev
+
+# 3 Open docs
+open http://localhost:3000/api
 ```
 
-## Compile and run the project
+> **Default port:** `3000`  
+> **Swagger UI:** `/api`
 
+---
+
+## Features
+- **Books CRUD** — create, read, update (`PUT`), and delete books.
+- **Nested Reviews CRUD** — `/books/:bookId/reviews` routes with validation pipes.
+- **Average Rating Endpoint** — `GET /books/:id/rating` returns the rounded mean.
+- **Global Validation & Error Filter** — consistent `404/409` JSON shape.
+- **Swagger/OpenAPI 3.1** — decorators auto-generate an interactive spec.
+- **Unit Tests** — sample tests for pipes, services, and controllers.
+
+---
+
+## Requirements
+- **Node.js 18+** (works on 20 LTS)
+- **npm** (v9 or above) — Yarn & pnpm also fine.
+
+Optional:
+- **Docker** & **Docker Compose** (v2) if you want a one-liner container run.
+
+---
+
+## Getting Started
+
+### 1 Clone & Install
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+git clone https://github.com/your-org/book-review-api.git
+cd book-review-api
+npm install
 ```
 
-## Run tests
+### 2 Environment
+No external services are required; the API keeps state in memory.  
+If you prefer Postgres or another DB, wire Up TypeORM/Prisma and replace the in-memory maps.
 
+### 3 Run
 ```bash
-# unit tests
-$ npm run test
+# Dev mode with hot-reload 
+npm run start:dev
 
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+# Production build
+npm run build && node dist/main.js
 ```
 
-## Deployment
-
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
-
+### 4 Docker (optional)
 ```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+docker build -t book-review-api .
+docker run -p 3000:3000 book-review-api
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+The container image is multi-stage and ends up ~100 MB.
 
-## Resources
+---
 
-Check out a few resources that may come in handy when working with NestJS:
+## API Reference
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+### Books
+| Method | Path | Description |
+| ------ | ----------------------- | --------------------------- |
+| `POST` | `/books` | Create a new book |
+| `GET`  | `/books` | List all books |
+| `GET`  | `/books/:id` | Retrieve a single book |
+| `PUT`  | `/books/:id` | Full-update a book |
+| `DELETE` | `/books/:id` | Delete a book |
+| `GET`  | `/books/:id/rating` | Average rating rounded to **one** decimal |
 
-## Support
+### Reviews (nested)
+| Method | Path | Description |
+| ------ | ----------------------------------------- | ---------------- |
+| `POST` | `/books/:bookId/reviews` | Add a review to a book |
+| `GET`  | `/books/:bookId/reviews` | List reviews for a book |
+| `GET`  | `/books/:bookId/reviews/:reviewId` | Retrieve one review |
+| `DELETE` | `/books/:bookId/reviews/:reviewId` | Remove a review |
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+> All IDs are integers ≥ 1.  
+> Validation errors return `400 Bad Request` with details.
 
-## Stay in touch
+---
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+## Example Requests
+
+Create a book:
+```bash
+curl -X POST http://localhost:3000/books   -H "Content-Type: application/json"   -d '{
+    "title": "Clean Code",
+    "author": "Robert C. Martin",
+    "year": 2008
+}'
+```
+
+Add a review:
+```bash
+curl -X POST http://localhost:3000/books/1/reviews   -H "Content-Type: application/json"   -d '{
+    "rating": 5,
+    "comment": "Must-read for every dev."
+}'
+```
+
+Fetch average rating:
+```bash
+curl http://localhost:3000/books/1/rating  # → { "average": 4.5 }
+```
+
+---
+
+## Testing
+```bash
+# Unit tests with jest 
+npm run test
+
+# Watch mode
+npm run test:watch
+```
+
+Coverage thresholds are set at **80 %**.
+
+---
+
+## Project Structure
+```
+src/
+├── books/
+│   ├── dto/
+│   ├── entities/
+│   ├── books.controller.ts
+│   └── books.service.ts
+├── reviews/
+│   ├── dto/
+│   ├── entities/
+│   ├── reviews.controller.ts
+│   └── reviews.service.ts
+├── common/
+│   ├── pipes/
+│   │   └── book-exists.pipe.ts
+│   └── filters/http-exception.filter.ts
+└── main.ts
+```
+*CSS-like separation:* controllers -> services -> DTOs/entities + **pure helpers** in `common/`.
+
+---
 
 ## License
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+[MIT](LICENSE) © 2025 Your Name / Your Org
