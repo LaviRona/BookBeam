@@ -9,28 +9,25 @@ export class ReviewsService {
     private readonly reviewsByBook = new Map<number, Review[]>();
     private nextId = 1;
 
-    /** Add a review to a book */
+    // Add a review to a book 
     create(dto: CreateReviewDto): Review {
         //Validate the book exists (throws NotFoundException if missing)
         this.booksService.findOne(dto.bookID);
         const review: Review = { id: this.nextId++, ...dto };
-
-        // bucket = existing list or new empty list
         const bucket = this.reviewsByBook.get(dto.bookID) ?? [];
         bucket.push(review);
         this.reviewsByBook.set(dto.bookID, bucket);
-
         return review;
     }
 
-    /** Get all reviews for a book */
+    // Get all reviews for a book 
     getAll(bookId: number): Review[] {
         this.booksService.findOne(bookId); // Validate the book exists (throws NotFoundException if missing)
-        // Return an empty array instead of undefined for nicer controller code
+        // Return an empty array instead if no reviews exist
         return this.reviewsByBook.get(bookId) ?? [];
     }
 
-    /** Average rating for a book (0 if no reviews) */
+    // Average rating for a book (0 if no reviews) 
     getAvg(bookId: number): number {
         this.booksService.findOne(bookId); // Validate the book exists (throws NotFoundException if missing)
         const bucket = this.reviewsByBook.get(bookId);

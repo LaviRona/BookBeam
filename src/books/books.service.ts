@@ -22,7 +22,7 @@ export class BooksService {
         );
     }
 
-
+    // Create a new book
     create(dto: CreateBookDto): Book {
         const dup = this.findDuplicate(dto);
         if (dup) {
@@ -36,16 +36,19 @@ export class BooksService {
         return book;
     }
 
+    // Get all books
     findAll(): Book[] {
         return this.books;
     }
 
+    // Find a book by ID
     findOne(id: number): Book {
         const book = this.books.find((b) => b.id === id);
         if (!book) throw new NotFoundException(`Book ${id} not found`);
         return book;
     }
 
+    // Update a book by ID
     update(id: number, dto: CreateBookDto): Book {
         const index = this.books.findIndex((b) => b.id === id);
         if (index === -1) throw new NotFoundException(`Book ${id} not found`);
@@ -61,6 +64,7 @@ export class BooksService {
         return this.books[index];
     }
 
+    // Delete a book by ID
     remove(id: number): void {
         const idx = this.books.findIndex((b) => b.id === id);
         if (idx === -1) throw new NotFoundException(`Book ${id} not found`);

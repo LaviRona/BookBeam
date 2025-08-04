@@ -1,6 +1,3 @@
-
-
-
 import {
     Controller, Get, Post, Patch, Delete,
     Param, Body, ParseIntPipe,
@@ -11,8 +8,10 @@ import {
 import { ReviewsService } from './reviews.service';
 import { CreateReviewDto } from './dto/create-review.dto';
 import { Review } from './entities/review.entity';
+
 @ApiTags('Reviews')
 @Controller('Reviews')
+
 export class ReviewsController {
     constructor(private readonly ReviewsService: ReviewsService) { }
 
