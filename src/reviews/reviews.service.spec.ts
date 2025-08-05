@@ -23,7 +23,7 @@ describe('ReviewsService.getAvg', () => {
     it('returns the average rating for a book with reviews', () => {
         // Arrange
         mockBooksService.findOne.mockReturnValue({ id: 1, title: 'Dummy' });
-        // Populate the private Map  (TypeScript lets us reach in with bracket-notation)
+        // Populate the private Map  
         (service as any).reviewsByBook = new Map([
             [1, [{ rating: 4 }, { rating: 5 }, { rating: 5 }]],
         ]);
