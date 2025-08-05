@@ -5,6 +5,7 @@ import {
 } from '@nestjs/common';
 import { CreateBookDto } from './dto/create-book.dto';
 import { Book } from './entities/book.entity';
+import { GetBooksQueryDto } from './dto/get-books-query.dto';
 
 @Injectable()
 export class BooksService {
@@ -36,9 +37,30 @@ export class BooksService {
         return book;
     }
 
-    // Get all books
-    findAll(): Book[] {
-        return this.books;
+    // Get all books (from query)
+    findAll({ author, title, year, sortBy, order }: GetBooksQueryDto) {
+        let result = [...this.books];
+
+        if (author) {
+            result = result.filter(b => b.author.toLowerCase() === author.toLowerCase());
+        }
+
+        if (title) {
+            result = result.filter(b =>
+                b.title.toLowerCase().includes(title.toLowerCase()),
+            );
+        }
+        if (year) {
+            result = result.filter(b => b.year === year);
+        }
+        if (sortBy) {
+            result.sort((a, b) =>
+                order === 'desc'
+                    ? (b[sortBy] as any) > (a[sortBy] as any) ? 1 : -1
+                    : (a[sortBy] as any) > (b[sortBy] as any) ? 1 : -1,
+            );
+        }
+        return result;
     }
 
     // Find a book by ID

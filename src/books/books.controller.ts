@@ -1,13 +1,14 @@
 import {
     Controller, Get, Post, Patch, Delete,
-    Param, Body, ParseIntPipe,
+    Param, Body, ParseIntPipe, Query
 } from '@nestjs/common';
 import {
-    ApiTags, ApiCreatedResponse, ApiOkResponse, ApiNoContentResponse,
+    ApiTags, ApiCreatedResponse, ApiOkResponse, ApiNoContentResponse, ApiQuery,
 } from '@nestjs/swagger';
 import { BooksService } from './books.service';
 import { CreateBookDto } from './dto/create-book.dto';
 import { Book } from './entities/book.entity';
+import { GetBooksQueryDto } from './dto/get-books-query.dto';
 
 @ApiTags('books')
 @Controller('books')
@@ -20,11 +21,18 @@ export class BooksController {
         return this.booksService.create(dto);
     }
 
+
     @Get()
+    @ApiQuery({ name: 'order', required: false, enum: ['asc', 'desc'] })
+    @ApiQuery({ name: 'sortBy', required: false, enum: ['title', 'author', 'year'] })
+    @ApiQuery({ name: 'year', required: false, type: Number })
+    @ApiQuery({ name: 'title', required: false, type: String })
+    @ApiQuery({ name: 'author', required: false, type: String })
     @ApiOkResponse({ type: Book, isArray: true })
-    findAll(): Book[] {
-        return this.booksService.findAll();
+    findAll(@Query() query: GetBooksQueryDto): Book[] {
+        return this.booksService.findAll(query);
     }
+
 
     @Get(':id')
     @ApiOkResponse({ type: Book })
