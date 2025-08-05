@@ -18,7 +18,6 @@ async function bootstrap() {
     .setTitle('My API')
     .setDescription('Auto-generated Swagger UI')
     .setVersion('1.0')
-    .addTag('hello')
     .build();
 
   const document = SwaggerModule.createDocument(app, config);

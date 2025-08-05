@@ -2,7 +2,7 @@ import {
     IsOptional,
     IsString,
     IsInt,
-    Min,
+    Min, Max,
     IsIn,
 } from 'class-validator';
 
@@ -18,7 +18,8 @@ export class GetBooksQueryDto {
 
     @IsOptional()
     @IsInt()
-    @Min(0)
+    @Min(1000, { message: 'Year must be 4 digits' })
+    @Max(9999, { message: 'Year must be 4 digits' })
     year?: number;
 
     @IsOptional()
